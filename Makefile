@@ -11,7 +11,7 @@ docker:
 docker-run:
 	(docker rm -f meshery-octarine) || true
 	docker run --name meshery-octarine -d \
-	-p 10000:10000 \
+	-p 10004:10004 \
 	-e DEBUG=true \
 	layer5/meshery-octarine
 
