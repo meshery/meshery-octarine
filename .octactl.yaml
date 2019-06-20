@@ -2,8 +2,8 @@ api_host: us-112.octarinesec.com
 api_port: 443
 config_version: 0.11.2
 docker:
-  email: kubecon@octarinesec.com
-  password: V2VsY29tZVRvT2N0YXJpbmU=
+  email: 
+  password: 
   username: octarinekubecon
 embedded_ip: true
 long_lived: false
