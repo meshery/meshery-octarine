@@ -27,8 +27,8 @@ var letters = []rune("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")
 
 const (
 	nsMgrUsername      = "meshery"
-	nsMgrPassword      = "meshery-password"
-	octarineDeployment = "meshery:playground"
+	nsMgrPassword      = ""
+	octarineDeployment = ""
 )
 
 func randSeq(n int) string {
