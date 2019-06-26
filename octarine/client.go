@@ -31,10 +31,12 @@ type OctarineClient struct {
 	k8sDynamicClient dynamic.Interface
 	eventChan        chan *meshes.EventsResponse
 
-	octarineNamespace    string
-	octarineDeployment   string
-	octarineControlPlane string
-
+	octarineAccount            string
+	octarineControlPlane       string
+	octarineAccMgrPword        string
+	octarineDomain             string
+	octarineCreatorPword       string
+	octarineDeleterPword       string
 	octarineReleaseVersion     string
 	octarineReleaseDownloadURL string
 	octarineReleaseUpdatedAt   time.Time

@@ -1,14 +1,10 @@
-api_host: us-112.octarinesec.com
+api_host: us-0120.octarinesec.com
 api_port: 443
-config_version: 0.11.2
-docker:
-  email: 
-  password: 
-  username: octarinekubecon
+config_version: 0.12.0
 embedded_ip: true
 long_lived: false
 restful_report: false
 service_version: "1.0"
 use_octarine_encryption: true
 use_quotas: "true"
-version_tag: 0.11.2
+version_tag: 0.12.0
