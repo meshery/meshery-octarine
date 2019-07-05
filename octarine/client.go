@@ -38,7 +38,7 @@ type OctarineClient struct {
 	octarineCreatorPword       string
 	octarineDeleterPword       string
 	octarineReleaseVersion     string
-	octarineReleaseDownloadURL string
+	octarineDataplaneNs        string
 	octarineReleaseUpdatedAt   time.Time
 }
 

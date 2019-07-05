@@ -24,7 +24,7 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
-var letters = []rune("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")
+var letters = []rune("abcdefghijklmnopqrstuvwxyz0123456789")
 
 const (
 	accMgrUsername      = "meshery"
@@ -46,7 +46,7 @@ func (oClient *OctarineClient) createCpObjects() error {
 	oClient.octarineDomain = os.Getenv("OCTARINE_DOMAIN")
 	cmd := exec.Command("octactl", "login", "creator@octarine", oClient.octarineControlPlane, "--password",
 	                    oClient.octarineCreatorPword)
-	logrus.Debugf("Login to namespace %s", oClient.octarineAccount)
+	logrus.Debugf("Login to namespace octarine")
 	err := cmd.Run()
 	if err != nil {
 		logrus.Errorf("Command finished with error: %v", err)
@@ -55,7 +55,7 @@ func (oClient *OctarineClient) createCpObjects() error {
 	oClient.octarineAccount = "meshery-" + randSeq(6)
 	cmd = exec.Command("octactl", "account", "create", oClient.octarineAccount, accMgrUsername,
                        oClient.octarineAccMgrPword)
-	logrus.Debugf("Creating namespace %s", oClient.octarineAccount)
+	logrus.Debugf("Creating account %s", oClient.octarineAccount)
 	err = cmd.Run()
 	if err != nil {
 		logrus.Errorf("Command finished with error: %v", err)
@@ -69,8 +69,8 @@ func (oClient *OctarineClient) createCpObjects() error {
 		logrus.Errorf("Command finished with error: %v", err)
 		return err
 	}
-	cmd = exec.Command("octactl", "deployment", "create", oClient.octarineAccount, accMgrUsername, oClient.octarineAccMgrPword)
-	logrus.Debugf("Creating deployment %s in namespace %s", oClient.octarineDomain, oClient.octarineAccount)
+	cmd = exec.Command("octactl", "domain", "create", oClient.octarineDomain)
+	logrus.Debugf("Creating domain %s in namespace %s", oClient.octarineDomain, oClient.octarineAccount)
 	err = cmd.Run()
 	if err != nil {
 		logrus.Errorf("Command finished with error: %v", err)
@@ -82,14 +82,14 @@ func (oClient *OctarineClient) createCpObjects() error {
 func (oClient *OctarineClient) deleteCpObjects() error {
 	cmd := exec.Command("octactl", "login", "deleter@octarine", oClient.octarineControlPlane, "--password",
 	                    oClient.octarineDeleterPword)
-	logrus.Debugf("Login as deleter to namespace %s", oClient.octarineAccount)
+	logrus.Debugf("Login as deleter to account octarine")
 	err := cmd.Run()
 	if err != nil {
 		logrus.Errorf("Command finished with error: %v", err)
 		return err
 	}
-	cmd = exec.Command("octactl", "namespace", "delete", oClient.octarineAccount, "--force")
-	logrus.Debugf("Creating namespace %s", oClient.octarineAccount)
+	cmd = exec.Command("octactl", "account", "delete", oClient.octarineAccount, "--force")
+	logrus.Debugf("Deleting account %s", oClient.octarineAccount)
 	err = cmd.Run()
 	if err != nil {
 		logrus.Errorf("Command finished with error: %v", err)

@@ -95,8 +95,9 @@ func (oClient *OctarineClient) deleteResource(ctx context.Context, res schema.Gr
 			return err
 		}
 	}
-
-	err := oClient.k8sDynamicClient.Resource(res).Namespace(data.GetNamespace()).Delete(data.GetName(), &metav1.DeleteOptions{})
+	policy := metav1.DeletePropagationBackground
+	err := oClient.k8sDynamicClient.Resource(res).Namespace(data.GetNamespace()).Delete(data.GetName(),
+	    &metav1.DeleteOptions{PropagationPolicy: &policy})
 	if err != nil {
 		err = errors.Wrapf(err, "unable to delete the requested resource, attempting operation without namespace")
 		logrus.Warn(err)
@@ -248,11 +249,31 @@ func (oClient *OctarineClient) labelNamespaceForAutoInjection(ctx context.Contex
 	if err != nil {
 		return err
 	}
+	secret := &unstructured.Unstructured{}
+	res = schema.GroupVersionResource{
+		Version:  "v1",
+		Resource: "secrets",
+	}
+	secret.SetName("docker-registry-secret")
+	secret.SetNamespace(oClient.octarineDataplaneNs)
+	secret, err = oClient.getResource(ctx, res, secret)
+	if err != nil {
+		return err
+	}
+	secret.SetNamespace(namespace)
+	secret.SetResourceVersion("")
+	err = oClient.createResource(ctx, res, secret)
+	if err != nil {
+		return err
+	}
 	return nil
 }
 
 func (oClient *OctarineClient) executeInstall(ctx context.Context, arReq *meshes.ApplyRuleRequest) error {
-	arReq.Namespace = "octarine-dataplane"
+	if arReq.Namespace == "" {
+		arReq.Namespace = "octarine-dataplane"
+	}
+	oClient.octarineDataplaneNs = arReq.Namespace
 	if arReq.DeleteOp {
 		defer oClient.deleteCpObjects()
 	} else {
