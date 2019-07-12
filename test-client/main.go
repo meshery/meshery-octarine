@@ -17,6 +17,7 @@ package main
 
 import (
 	"context"
+	"fmt"
 	"io/ioutil"
 	"log"
 	"os"
@@ -30,7 +31,16 @@ const (
 	address = "localhost:10004"
 )
 
+func usage() {
+	fmt.Println("Usage:")
+	fmt.Println("test_client <init <kubeconfig filename><context name>>|<install|delete>|<install-bookinfo|delete-bookinfo <namespace>>")
+}
+
 func main() {
+	if len(os.Args) == 1 {
+		usage()
+		return
+	}
 	// Set up a connection to the server.
 	conn, err := grpc.Dial(address, grpc.WithInsecure())
 	if err != nil {
@@ -47,21 +57,21 @@ func main() {
 		if err != nil {
 			log.Fatalf("could not initialize client: %v", err)
 		}
-	}
-	if os.Args[1] == "install" || os.Args[1] == "delete" {
+	} else if os.Args[1] == "install" || os.Args[1] == "delete" {
 		_, err = c.ApplyOperation(ctx, &pb.ApplyRuleRequest{OpName: "octarine_install",
 															DeleteOp: os.Args[1] == "delete",
 															Namespace: "octarine-dataplane"})
 		if err != nil {
 			log.Fatalf("could not install octarine: %v", err)
 		}
-	}
-	if os.Args[1] == "install-bookinfo" || os.Args[1] == "delete-bookinfo" {
+	} else if os.Args[1] == "install-bookinfo" || os.Args[1] == "delete-bookinfo" {
 		_, err = c.ApplyOperation(ctx, &pb.ApplyRuleRequest{OpName: "install_book_info",
 															DeleteOp: os.Args[1] == "delete-bookinfo",
 															Namespace: os.Args[2]})
 		if err != nil {
 			log.Fatalf("could not install octarine: %v", err)
 		}
+	} else {
+		usage()
 	}
 }
