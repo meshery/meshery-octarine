@@ -3,6 +3,28 @@
 # meshery-octarine
 Meshery adapter for Octarine
 
+## How does the Octarine Adapter work
+The Octarine adapter relys on an existing control plane already being up. Octarine provides a shared control plane for all Meshery users.
+In order to deploy Octarine's dataplane into a target cluster the adapter performs the follwing operations:
+* A new account is provisioned in the Octarine Control Plane.
+* A domain is registered in that account. A domain in Octarine identified a k8s cluster.
+* The YAML files required for deploying the data plane on the target cluster are generated.
+* The YAML files are applied on the `octarine-dataplane` namespace in the target cluster.
+
+Once the Octarine's data plane services are deployed, the adapter can be used to deploy Bookinfo. The steps here are:
+* Enable the target namespace for automatic sidecar injection.
+* Deploy Bookinfo to the target namespace.
+
+## Environement Variables
+In order to connect to the Octarine Control Plane the adapter requires the follwing environment variables to be set:
+* OCTARINE_DOCKER_USERNAME: The docker username needed to pull Octarine's images to the target cluster. Do not use your own docker credentials. Use the ones supplies by Octarine.
+* OCTARINE_DOCKER_EMAIL: The docker username needed to pull Octarine's images to the target cluster.
+* OCTARINE_DOCKER_PASSWORD: The docker username needed to pull Octarine's images to the target cluster.
+* OCTARINE_ACC_MGR_PASSWD : The password that will be assigned to the user 'meshery' in the new account.
+* OCTARINE_CREATOR_PASSWD : The password needed to create an account in Octarine.
+* OCTARINE_DELETER_PASSWD : The password needed to delete the account in Octarine.
+* OCTARINE_CP : The address of the Octarine Control Plane. Example: meshery-cp.octarinesec.com
+* OCTARINE_DOMAIN : The name that will be assigned to the target cluster in Octarine. Example: meshery:domain
 
 ## [Meshery](https://layer5.io/meshery)
 
