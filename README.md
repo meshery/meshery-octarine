@@ -3,7 +3,9 @@
 # meshery-octarine
 Meshery adapter for Octarine
 
-## How does the Octarine Adapter work
+><p align="center"><i>If you’re using Meshery or if you like the project, please ★ star this repository to show your support! 🤩</i></p>
+
+## How the Meshery Adapter for Octarine Works
 The Octarine adapter relys on an existing control plane already being up. Octarine provides a shared control plane for all Meshery users.
 In order to deploy Octarine's dataplane into a target cluster the adapter performs the follwing operations:
 * A new account is provisioned in the Octarine Control Plane.
@@ -25,7 +27,7 @@ In order to connect to the Octarine Control Plane the adapter requires the follw
 * OCTARINE_DELETER_PASSWD : The password needed to delete the account in Octarine.
 * OCTARINE_CP : The address of the Octarine Control Plane. Example: meshery-cp.octarinesec.com
 * OCTARINE_DOMAIN : The name that will be assigned to the target cluster in Octarine. Example: meshery:domain
-
+---
 ## [Meshery](https://layer5.io/meshery)
 
 A service mesh playground to faciliate learning about functionality and performance of different service meshes. Meshery incorporates the collection and display of metrics from applications running in the playground.
