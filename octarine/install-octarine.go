@@ -44,6 +44,21 @@ func (oClient *OctarineClient) createCpObjects() error {
 	oClient.octarineCreatorPword = os.Getenv("OCTARINE_CREATOR_PASSWD")
 	oClient.octarineDeleterPword = os.Getenv("OCTARINE_DELETER_PASSWD")
 	oClient.octarineDomain = os.Getenv("OCTARINE_DOMAIN")
+	dockerUser, userVar := os.LookupEnv("OCTARINE_DOCKER_USERNAME")
+	dockerEmail, emailVar := os.LookupEnv("OCTARINE_DOCKER_EMAIL")
+	dockerPassword, passwordVar := os.LookupEnv("OCTARINE_DOCKER_PASSWORD")
+	if userVar {
+		os.Setenv("OCTARINE_DOCKER.USERNAME", dockerUser)
+		logrus.Debugf("Docker user %s", dockerUser)
+	}
+	if emailVar {
+		os.Setenv("OCTARINE_DOCKER.EMAIL", dockerEmail)
+		logrus.Debugf("Docker email %s", dockerEmail)
+	}
+	if passwordVar {
+		os.Setenv("OCTARINE_DOCKER.PASSWORD", dockerPassword)
+		logrus.Debugf("Docker password %s", dockerPassword)
+	}
 	cmd := exec.Command("octactl", "login", "creator@octarine", oClient.octarineControlPlane, "--password",
 	                    oClient.octarineCreatorPword)
 	logrus.Debugf("Login to namespace octarine")
