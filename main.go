@@ -32,7 +32,7 @@ import (
 )
 
 var (
-	gRPCPort = flag.Int("grpc-port", 10004, "The gRPC server port")
+	gRPCPort = flag.Int("grpc-port", 10003, "The gRPC server port")
 )
 
 var log grpclog.LoggerV2
