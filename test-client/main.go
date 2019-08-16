@@ -28,7 +28,7 @@ import (
 )
 
 const (
-	address = "localhost:10004"
+	address = "localhost:10003"
 )
 
 func usage() {
