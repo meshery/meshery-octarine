@@ -270,30 +270,30 @@ func (oClient *OctarineClient) labelNamespaceForAutoInjection(ctx context.Contex
 }
 
 func (oClient *OctarineClient) executeInstall(ctx context.Context, arReq *meshes.ApplyRuleRequest) error {
-	if arReq.Namespace == "" {
+	if arReq.GetNamespace() == "" {
 		arReq.Namespace = "octarine-dataplane"
 	}
-	oClient.octarineDataplaneNs = arReq.Namespace
-	if arReq.DeleteOp {
+	oClient.octarineDataplaneNs = arReq.GetNamespace()
+	if arReq.GetDeleteOp() {
 		defer oClient.deleteCpObjects()
 	} else {
 		if err := oClient.createCpObjects(); err != nil {
 			return err
 		}
 	}
-	dataplaneYaml, err := oClient.getOctarineYAMLs(arReq.Namespace)
+	dataplaneYaml, err := oClient.getOctarineYAMLs(arReq.GetNamespace())
 	if err != nil {
 		return err
 	}
-	if err := oClient.applyConfigChange(ctx, dataplaneYaml, arReq.Namespace, arReq.DeleteOp); err != nil {
+	if err := oClient.applyConfigChange(ctx, dataplaneYaml, arReq.GetNamespace(), arReq.GetDeleteOp()); err != nil {
 		return err
 	}
 	return nil
 }
 
 func (oClient *OctarineClient) executeBookInfoInstall(ctx context.Context, arReq *meshes.ApplyRuleRequest) error {
-	if !arReq.DeleteOp {
-		if err := oClient.labelNamespaceForAutoInjection(ctx, arReq.Namespace); err != nil {
+	if !arReq.GetDeleteOp() {
+		if err := oClient.labelNamespaceForAutoInjection(ctx, arReq.GetNamespace()); err != nil {
 			return err
 		}
 	}
@@ -301,7 +301,7 @@ func (oClient *OctarineClient) executeBookInfoInstall(ctx context.Context, arReq
 	if err != nil {
 		return err
 	}
-	if err := oClient.applyConfigChange(ctx, yamlFileContents, arReq.Namespace, arReq.DeleteOp); err != nil {
+	if err := oClient.applyConfigChange(ctx, yamlFileContents, arReq.GetNamespace(), arReq.GetDeleteOp()); err != nil {
 		return err
 	}
 	return nil
@@ -313,32 +313,33 @@ func (oClient *OctarineClient) ApplyOperation(ctx context.Context, arReq *meshes
 		return nil, errors.New("mesh client has not been created")
 	}
 
-	op, ok := supportedOps[arReq.OpName]
+	op, ok := supportedOps[arReq.GetOpName()]
 	if !ok {
-		return nil, fmt.Errorf("error: %s is not a valid operation name", arReq.OpName)
+		return nil, fmt.Errorf("error: %s is not a valid operation name", arReq.GetOpName())
 	}
 
-	if arReq.OpName == customOpCommand && arReq.CustomBody == "" {
-		return nil, fmt.Errorf("error: yaml body is empty for %s operation", arReq.OpName)
+	if arReq.GetOpName() == customOpCommand && arReq.GetCustomBody() == "" {
+		return nil, fmt.Errorf("error: yaml body is empty for %s operation", arReq.GetOpName())
 	}
 
 	var yamlFileContents string
 	// var err error
 
-	switch arReq.OpName {
+	switch arReq.GetOpName() {
 	case customOpCommand:
-		yamlFileContents = arReq.CustomBody
+		yamlFileContents = arReq.GetCustomBody()
 	case installOctarineCommand:
 		go func() {
 			opName1 := "deploying"
-			if arReq.DeleteOp {
+			if arReq.GetDeleteOp() {
 				opName1 = "removing"
 			}
 			if err := oClient.executeInstall(ctx, arReq); err != nil {
 				oClient.eventChan <- &meshes.EventsResponse{
-					EventType: meshes.EventType_ERROR,
-					Summary:   fmt.Sprintf("Error while %s Octarine", opName1),
-					Details:   err.Error(),
+					OperationId: arReq.GetOperationId(),
+					EventType:   meshes.EventType_ERROR,
+					Summary:     fmt.Sprintf("Error while %s Octarine", opName1),
+					Details:     err.Error(),
 				}
 				return
 			}
@@ -347,9 +348,10 @@ func (oClient *OctarineClient) ApplyOperation(ctx context.Context, arReq *meshes
 				opName = "removed"
 			}
 			oClient.eventChan <- &meshes.EventsResponse{
-				EventType: meshes.EventType_INFO,
-				Summary:   fmt.Sprintf("Octarine %s successfully", opName),
-				Details:   fmt.Sprintf("The latest version of Octarine is now %s.", opName),
+				OperationId: arReq.GetOperationId(),
+				EventType:   meshes.EventType_INFO,
+				Summary:     fmt.Sprintf("Octarine %s successfully", opName),
+				Details:     fmt.Sprintf("The latest version of Octarine is now %s.", opName),
 			}
 			return
 		}()
@@ -357,25 +359,27 @@ func (oClient *OctarineClient) ApplyOperation(ctx context.Context, arReq *meshes
 	case installBookInfoCommand:
 		go func() {
 			opName1 := "deploying"
-			if arReq.DeleteOp {
+			if arReq.GetDeleteOp() {
 				opName1 = "removing"
 			}
 			if err := oClient.executeBookInfoInstall(ctx, arReq); err != nil {
 				oClient.eventChan <- &meshes.EventsResponse{
-					EventType: meshes.EventType_ERROR,
-					Summary:   fmt.Sprintf("Error while %s the canonical Book Info App", opName1),
-					Details:   err.Error(),
+					OperationId: arReq.GetOperationId(),
+					EventType:   meshes.EventType_ERROR,
+					Summary:     fmt.Sprintf("Error while %s the canonical Book Info App", opName1),
+					Details:     err.Error(),
 				}
 				return
 			}
 			opName := "deployed"
-			if arReq.DeleteOp {
+			if arReq.GetDeleteOp() {
 				opName = "removed"
 			}
 			oClient.eventChan <- &meshes.EventsResponse{
-				EventType: meshes.EventType_INFO,
-				Summary:   fmt.Sprintf("Book Info app %s successfully", opName),
-				Details:   fmt.Sprintf("The canonical Book Info app is now %s.", opName),
+				OperationId: arReq.GetOperationId(),
+				EventType:   meshes.EventType_INFO,
+				Summary:     fmt.Sprintf("Book Info app %s successfully", opName),
+				Details:     fmt.Sprintf("The canonical Book Info app is now %s.", opName),
 			}
 			return
 		}()
@@ -392,8 +396,8 @@ func (oClient *OctarineClient) ApplyOperation(ctx context.Context, arReq *meshes
 		}
 		buf := bytes.NewBufferString("")
 		err = tmpl.Execute(buf, map[string]string{
-			"user_name": arReq.Username,
-			"namespace": arReq.Namespace,
+			"user_name": arReq.GetUsername(),
+			"namespace": arReq.GetNamespace(),
 		})
 		if err != nil {
 			err = errors.Wrapf(err, "unable to execute template")
@@ -403,7 +407,7 @@ func (oClient *OctarineClient) ApplyOperation(ctx context.Context, arReq *meshes
 		yamlFileContents = buf.String()
 	}
 
-	if err := oClient.applyConfigChange(ctx, yamlFileContents, arReq.Namespace, arReq.DeleteOp); err != nil {
+	if err := oClient.applyConfigChange(ctx, yamlFileContents, arReq.GetNamespace(), arReq.GetDeleteOp()); err != nil {
 		return nil, err
 	}
 
@@ -432,12 +436,19 @@ func (oClient *OctarineClient) applyConfigChange(ctx context.Context, yamlFileCo
 
 // SupportedOperations - returns a list of supported operations on the mesh
 func (oClient *OctarineClient) SupportedOperations(context.Context, *meshes.SupportedOperationsRequest) (*meshes.SupportedOperationsResponse, error) {
-	result := map[string]string{}
-	for key, op := range supportedOps {
-		result[key] = op.name
+	supportedOpsCount := len(supportedOps)
+	result := make([]*meshes.SupportedOperation, supportedOpsCount)
+	i := 0
+	for k, sp := range supportedOps {
+			result[i] = &meshes.SupportedOperation{
+					Key:      k,
+					Value:    sp.name,
+					Category: sp.opType,
+			}
+			i++
 	}
 	return &meshes.SupportedOperationsResponse{
-		Ops: result,
+			Ops: result,
 	}, nil
 }
 

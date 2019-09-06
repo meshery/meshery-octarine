@@ -14,15 +14,14 @@
 
 package octarine
 
+import "github.com/layer5io/meshery-octarine/meshes"
+
 type supportedOperation struct {
 	// a friendly name
 	name string
 	// the template file name
 	templateName string
-	// the app label
-	appLabel string
-	// // returnLogs specifies if the operation logs should be returned
-	// returnLogs bool
+	opType meshes.OpCategory
 }
 
 const (
@@ -36,18 +35,20 @@ var supportedOps = map[string]supportedOperation{
 	installOctarineCommand: {
 		name: "Install the latest version of Octarine's data plane",
 		// templateName: "install_octarine.tmpl",
+		opType: meshes.OpCategory_INSTALL,
 	},
 	installBookInfoCommand: {
 		name: "Install the canonical Book Info Application",
 		// templateName: "install_bookinfo.tmpl",
+		opType: meshes.OpCategory_SAMPLE_APPLICATION,
 	},
 	runVet: {
 		name: "Vet Ocatarine's deployment",
 		// templateName: "octarine_vet.tmpl",
-		// appLabel:     "octarine-vet",
-		// returnLogs:   true,
+		opType: meshes.OpCategory_VALIDATE,
 	},
 	customOpCommand: {
 		name: "Custom YAML",
+		opType: meshes.OpCategory_CUSTOM,
 	},
 }
