@@ -33,12 +33,12 @@ const (
 
 var supportedOps = map[string]supportedOperation{
 	installOctarineCommand: {
-		name: "Install the latest version of Octarine's data plane",
+		name: "Install latest version of Octarine's data plane",
 		// templateName: "install_octarine.tmpl",
 		opType: meshes.OpCategory_INSTALL,
 	},
 	installBookInfoCommand: {
-		name: "Install the canonical Book Info Application",
+		name: "Install sample application BookInfo",
 		// templateName: "install_bookinfo.tmpl",
 		opType: meshes.OpCategory_SAMPLE_APPLICATION,
 	},
@@ -48,7 +48,7 @@ var supportedOps = map[string]supportedOperation{
 		opType: meshes.OpCategory_VALIDATE,
 	},
 	customOpCommand: {
-		name: "Custom YAML",
+		name: "Apply custom configuration (YAML)",
 		opType: meshes.OpCategory_CUSTOM,
 	},
 }
