@@ -33,12 +33,12 @@ const (
 
 var supportedOps = map[string]supportedOperation{
 	installOctarineCommand: {
-		name: "Install latest version of Octarine's data plane",
+		name: "Latest version of Octarine's data plane",
 		// templateName: "install_octarine.tmpl",
 		opType: meshes.OpCategory_INSTALL,
 	},
 	installBookInfoCommand: {
-		name: "Install sample application BookInfo",
+		name: "Sample application BookInfo",
 		// templateName: "install_bookinfo.tmpl",
 		opType: meshes.OpCategory_SAMPLE_APPLICATION,
 	},
