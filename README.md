@@ -2,7 +2,7 @@
 
 [![Docker Pulls](https://img.shields.io/docker/pulls/layer5/meshery-octarine.svg)](https://hub.docker.com/r/layer5/meshery-octarine)
 [![Go Report Card](https://goreportcard.com/badge/github.com/layer5io/meshery-octarine)](https://goreportcard.com/report/github.com/layer5io/meshery-octarine)
-[![Build Status](https://travis-ci.com/layer5io/meshery-octarine.svg?branch=master)](https://travis-ci.com/layer5io/meshery-octarine)
+[![Build Status](https://github.com/layer5io/meshery-octarine/workflows/Meshery-Octarine/badge.svg)](https://github.com/layer5io/meshery-octarine/actions)
 ![GitHub](https://img.shields.io/github/license/layer5io/meshery-octarine.svg)
 ![GitHub issues by-label](https://img.shields.io/github/issues/layer5io/meshery-octarine/help%20wanted.svg)
 ![Website](https://img.shields.io/website/https/layer5.io/meshery.svg)
