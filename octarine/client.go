@@ -24,8 +24,8 @@ import (
 	"k8s.io/client-go/tools/clientcmd"
 )
 
-// OctarineClient represents an Octarine client in Meshery
-type OctarineClient struct {
+// Client represents an Octarine client in Meshery
+type Client struct {
 	config           *rest.Config
 	k8sClientset     *kubernetes.Clientset
 	k8sDynamicClient dynamic.Interface
