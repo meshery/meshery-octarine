@@ -57,7 +57,7 @@ func configClient(kubeconfig []byte, contextName string) (*rest.Config, error) {
 	return rest.InClusterConfig()
 }
 
-func newClient(kubeconfig []byte, contextName string) (*OctarineClient, error) {
+func newClient(kubeconfig []byte, contextName string) (*Client, error) {
 	client := OctarineClient{}
 	config, err := configClient(kubeconfig, contextName)
 	if err != nil {
