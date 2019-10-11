@@ -25,7 +25,7 @@ import (
 )
 
 // OctarineClient represents an Octarine client in Meshery
-type OctarineClient struct {
+type Client struct {
 	config           *rest.Config
 	k8sClientset     *kubernetes.Clientset
 	k8sDynamicClient dynamic.Interface
