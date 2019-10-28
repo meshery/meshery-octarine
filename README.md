@@ -3,10 +3,10 @@
 [![Docker Pulls](https://img.shields.io/docker/pulls/layer5/meshery-octarine.svg)](https://hub.docker.com/r/layer5/meshery-octarine)
 [![Go Report Card](https://goreportcard.com/badge/github.com/layer5io/meshery-octarine)](https://goreportcard.com/report/github.com/layer5io/meshery-octarine)
 [![Build Status](https://github.com/layer5io/meshery-octarine/workflows/Meshery-Octarine/badge.svg)](https://github.com/layer5io/meshery-octarine/actions)
-![GitHub](https://img.shields.io/github/license/layer5io/meshery-octarine.svg)
-![GitHub issues by-label](https://img.shields.io/github/issues/layer5io/meshery-octarine/help%20wanted.svg)
-![Website](https://img.shields.io/website/https/layer5.io/meshery.svg)
-![Twitter Follow](https://img.shields.io/twitter/follow/layer5.svg?label=Follow&style=social)
+[![GitHub](https://img.shields.io/github/license/layer5io/meshery-octarine.svg)](LICENSE)
+[![GitHub issues by-label](https://img.shields.io/github/issues/layer5io/meshery-octarine/help%20wanted.svg)](https://github.com/layer5io/meshery-octarine/issues?q=is%3Aopen+is%3Aissue+label%3A"help+wanted")
+[![Website](https://img.shields.io/website/https/layer5.io/meshery.svg)](https://layer5.io/meshery/)
+[![Twitter Follow](https://img.shields.io/twitter/follow/layer5.svg?label=Follow&style=social)](https://twitter.com/intent/follow?screen_name=mesheryio)
 [![Slack](https://img.shields.io/badge/slack-380-lightgrey)](http://slack.layer5.io)
 
 # meshery-octarine
