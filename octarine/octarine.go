@@ -32,8 +32,8 @@ import (
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 )
-
-func (oClient *OctarineClient) CreateMeshInstance(_ context.Context, k8sReq *meshes.CreateMeshInstanceRequest) (*meshes.CreateMeshInstanceResponse, error) {
+////CreateMeshInstance is called from UI
+func (oClient *Client) CreateMeshInstance(_ context.Context, k8sReq *meshes.CreateMeshInstanceRequest) (*meshes.CreateMeshInstanceResponse, error) {
 	var k8sConfig []byte
 	contextName := ""
 	if k8sReq != nil {
@@ -56,7 +56,7 @@ func (oClient *OctarineClient) CreateMeshInstance(_ context.Context, k8sReq *mes
 	return &meshes.CreateMeshInstanceResponse{}, nil
 }
 
-func (oClient *OctarineClient) createResource(ctx context.Context, res schema.GroupVersionResource, data *unstructured.Unstructured) error {
+func (oClient *Client) createResource(ctx context.Context, res schema.GroupVersionResource, data *unstructured.Unstructured) error {
 	_, err := oClient.k8sDynamicClient.Resource(res).Namespace(data.GetNamespace()).Create(data, metav1.CreateOptions{})
 	if err != nil {
 		err = errors.Wrapf(err, "unable to create the requested resource, attempting operation without namespace")
@@ -72,7 +72,7 @@ func (oClient *OctarineClient) createResource(ctx context.Context, res schema.Gr
 	return nil
 }
 
-func (oClient *OctarineClient) deleteResource(ctx context.Context, res schema.GroupVersionResource, data *unstructured.Unstructured) error {
+func (oClient *Client) deleteResource(ctx context.Context, res schema.GroupVersionResource, data *unstructured.Unstructured) error {
 	if oClient.k8sDynamicClient == nil {
 		return errors.New("mesh client has not been created")
 	}
@@ -113,7 +113,7 @@ func (oClient *OctarineClient) deleteResource(ctx context.Context, res schema.Gr
 	return nil
 }
 
-func (oClient *OctarineClient) getResource(ctx context.Context, res schema.GroupVersionResource, data *unstructured.Unstructured) (*unstructured.Unstructured, error) {
+func (oClient *Client) getResource(ctx context.Context, res schema.GroupVersionResource, data *unstructured.Unstructured) (*unstructured.Unstructured, error) {
 	data1, err := oClient.k8sDynamicClient.Resource(res).Namespace(data.GetNamespace()).Get(data.GetName(), metav1.GetOptions{})
 	if err != nil {
 		err = errors.Wrap(err, "unable to retrieve the resource with a matching name, attempting operation without namespace")
@@ -130,7 +130,7 @@ func (oClient *OctarineClient) getResource(ctx context.Context, res schema.Group
 	return data1, nil
 }
 
-func (oClient *OctarineClient) updateResource(ctx context.Context, res schema.GroupVersionResource, data *unstructured.Unstructured) error {
+func (oClient *Client) updateResource(ctx context.Context, res schema.GroupVersionResource, data *unstructured.Unstructured) error {
 	if _, err := oClient.k8sDynamicClient.Resource(res).Namespace(data.GetNamespace()).Update(data, metav1.UpdateOptions{}); err != nil {
 		err = errors.Wrap(err, "unable to update resource with the given name, attempting operation without namespace")
 		logrus.Warn(err)
@@ -146,11 +146,11 @@ func (oClient *OctarineClient) updateResource(ctx context.Context, res schema.Gr
 }
 
 // MeshName just returns the name of the mesh the client is representing
-func (oClient *OctarineClient) MeshName(context.Context, *meshes.MeshNameRequest) (*meshes.MeshNameResponse, error) {
+func (oClient *Client) MeshName(context.Context, *meshes.MeshNameRequest) (*meshes.MeshNameResponse, error) {
 	return &meshes.MeshNameResponse{Name: "Octarine"}, nil
 }
 
-func (oClient *OctarineClient) applyManifestPayload(ctx context.Context, namespace string, newBytes []byte, delete bool) error {
+func (oClient *Client) applyManifestPayload(ctx context.Context, namespace string, newBytes []byte, delete bool) error {
 	if oClient.k8sDynamicClient == nil {
 		return errors.New("mesh client has not been created")
 	}
@@ -182,7 +182,7 @@ func (oClient *OctarineClient) applyManifestPayload(ctx context.Context, namespa
 	return nil
 }
 
-func (oClient *OctarineClient) executeManifest(ctx context.Context, data *unstructured.Unstructured, namespace string, delete bool) error {
+func (oClient *Client) executeManifest(ctx context.Context, data *unstructured.Unstructured, namespace string, delete bool) error {
 	// logrus.Debug("========================================================")
 	// logrus.Debugf("Received data: %+#v", data)
 	if namespace != "" {
@@ -231,7 +231,7 @@ func (oClient *OctarineClient) executeManifest(ctx context.Context, data *unstru
 	return nil
 }
 
-func (oClient *OctarineClient) labelNamespaceForAutoInjection(ctx context.Context, namespace string) error {
+func (oClient *Client) labelNamespaceForAutoInjection(ctx context.Context, namespace string) error {
 	ns := &unstructured.Unstructured{}
 	res := schema.GroupVersionResource{
 		Version:  "v1",
@@ -269,7 +269,7 @@ func (oClient *OctarineClient) labelNamespaceForAutoInjection(ctx context.Contex
 	return nil
 }
 
-func (oClient *OctarineClient) executeInstall(ctx context.Context, arReq *meshes.ApplyRuleRequest) error {
+func (oClient *Client) executeInstall(ctx context.Context, arReq *meshes.ApplyRuleRequest) error {
 	if arReq.GetNamespace() == "" {
 		arReq.Namespace = "octarine-dataplane"
 	}
@@ -291,7 +291,7 @@ func (oClient *OctarineClient) executeInstall(ctx context.Context, arReq *meshes
 	return nil
 }
 
-func (oClient *OctarineClient) executeBookInfoInstall(ctx context.Context, arReq *meshes.ApplyRuleRequest) error {
+func (oClient *Client) executeBookInfoInstall(ctx context.Context, arReq *meshes.ApplyRuleRequest) error {
 	if !arReq.GetDeleteOp() {
 		if err := oClient.labelNamespaceForAutoInjection(ctx, arReq.GetNamespace()); err != nil {
 			return err
@@ -308,7 +308,7 @@ func (oClient *OctarineClient) executeBookInfoInstall(ctx context.Context, arReq
 }
 
 // ApplyOperation is a method invoked to apply a particular operation on the mesh in a namespace
-func (oClient *OctarineClient) ApplyOperation(ctx context.Context, arReq *meshes.ApplyRuleRequest) (*meshes.ApplyRuleResponse, error) {
+func (oClient *Client) ApplyOperation(ctx context.Context, arReq *meshes.ApplyRuleRequest) (*meshes.ApplyRuleResponse, error) {
 	if arReq == nil {
 		return nil, errors.New("mesh client has not been created")
 	}
@@ -414,7 +414,7 @@ func (oClient *OctarineClient) ApplyOperation(ctx context.Context, arReq *meshes
 	return &meshes.ApplyRuleResponse{}, nil
 }
 
-func (oClient *OctarineClient) applyConfigChange(ctx context.Context, yamlFileContents, namespace string, delete bool) error {
+func (oClient *Client) applyConfigChange(ctx context.Context, yamlFileContents, namespace string, delete bool) error {
 	yamls := strings.Split(yamlFileContents, "---")
 
 	for _, yml := range yamls {
@@ -435,7 +435,7 @@ func (oClient *OctarineClient) applyConfigChange(ctx context.Context, yamlFileCo
 }
 
 // SupportedOperations - returns a list of supported operations on the mesh
-func (oClient *OctarineClient) SupportedOperations(context.Context, *meshes.SupportedOperationsRequest) (*meshes.SupportedOperationsResponse, error) {
+func (oClient *Client) SupportedOperations(context.Context, *meshes.SupportedOperationsRequest) (*meshes.SupportedOperationsResponse, error) {
 	supportedOpsCount := len(supportedOps)
 	result := make([]*meshes.SupportedOperation, supportedOpsCount)
 	i := 0
@@ -453,7 +453,7 @@ func (oClient *OctarineClient) SupportedOperations(context.Context, *meshes.Supp
 }
 
 // StreamEvents - streams generated/collected events to the client
-func (oClient *OctarineClient) StreamEvents(in *meshes.EventsRequest, stream meshes.MeshService_StreamEventsServer) error {
+func (oClient *Client) StreamEvents(in *meshes.EventsRequest, stream meshes.MeshService_StreamEventsServer) error {
 	logrus.Debugf("waiting on event stream. . .")
 	for {
 		select {
