@@ -42,6 +42,7 @@ type Client struct {
 	octarineReleaseUpdatedAt   time.Time
 }
 
+
 func configClient(kubeconfig []byte, contextName string) (*rest.Config, error) {
 	if len(kubeconfig) > 0 {
 		ccfg, err := clientcmd.Load(kubeconfig)
