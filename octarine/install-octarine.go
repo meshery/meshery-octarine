@@ -27,7 +27,7 @@ import (
 var letters = []rune("abcdefghijklmnopqrstuvwxyz0123456789")
 
 const (
-	accMgrUsername      = "meshery"
+	accMgrUsername = "meshery"
 )
 
 func randSeq(n int) string {
@@ -38,7 +38,7 @@ func randSeq(n int) string {
 	return string(b)
 }
 
-func (oClient *OctarineClient) createCpObjects() error {
+func (oClient *Client) createCpObjects() error {
 	oClient.octarineControlPlane = os.Getenv("OCTARINE_CP")
 	oClient.octarineAccMgrPword = os.Getenv("OCTARINE_ACC_MGR_PASSWD")
 	oClient.octarineCreatorPword = os.Getenv("OCTARINE_CREATOR_PASSWD")
@@ -60,7 +60,7 @@ func (oClient *OctarineClient) createCpObjects() error {
 		logrus.Debugf("Docker password %s", dockerPassword)
 	}
 	cmd := exec.Command("octactl", "login", "creator@octarine", oClient.octarineControlPlane, "--password",
-	                    oClient.octarineCreatorPword)
+		oClient.octarineCreatorPword)
 	logrus.Debugf("Login to namespace octarine")
 	err := cmd.Run()
 	if err != nil {
@@ -69,15 +69,15 @@ func (oClient *OctarineClient) createCpObjects() error {
 	}
 	oClient.octarineAccount = "meshery-" + randSeq(6)
 	cmd = exec.Command("octactl", "account", "create", oClient.octarineAccount, accMgrUsername,
-                       oClient.octarineAccMgrPword)
+		oClient.octarineAccMgrPword)
 	logrus.Debugf("Creating account %s", oClient.octarineAccount)
 	err = cmd.Run()
 	if err != nil {
 		logrus.Errorf("Command finished with error: %v", err)
 		return err
 	}
-	cmd = exec.Command("octactl", "login", accMgrUsername + "@" + oClient.octarineAccount,
-	                   oClient.octarineControlPlane, "--password", oClient.octarineAccMgrPword)
+	cmd = exec.Command("octactl", "login", accMgrUsername+"@"+oClient.octarineAccount,
+		oClient.octarineControlPlane, "--password", oClient.octarineAccMgrPword)
 	logrus.Debugf("Login to namespace %s", oClient.octarineAccount)
 	err = cmd.Run()
 	if err != nil {
@@ -94,9 +94,9 @@ func (oClient *OctarineClient) createCpObjects() error {
 	return nil
 }
 
-func (oClient *OctarineClient) deleteCpObjects() error {
+func (oClient *Client) deleteCpObjects() error {
 	cmd := exec.Command("octactl", "login", "deleter@octarine", oClient.octarineControlPlane, "--password",
-	                    oClient.octarineDeleterPword)
+		oClient.octarineDeleterPword)
 	logrus.Debugf("Login as deleter to account octarine")
 	err := cmd.Run()
 	if err != nil {
@@ -114,7 +114,7 @@ func (oClient *OctarineClient) deleteCpObjects() error {
 }
 
 // For this function to work, OCTARINE_DOCKER_USERNAME, OCTARINE_DOCKER_EMAIL, OCTARINE_DOCKER_PASSWORD (based64) must be set.
-func (oClient *OctarineClient) getOctarineDataplaneYAML(namespace string) (string, error) {
+func (oClient *Client) getOctarineDataplaneYAML(namespace string) (string, error) {
 	cmd := exec.Command("octactl", "dataplane", "install", "--k8s-namespace", namespace, oClient.octarineDomain)
 	logrus.Debugf("Creating dataplane yaml for deployment %s in namespace %s", oClient.octarineDomain, namespace)
 	dp, err := cmd.Output()
@@ -126,10 +126,10 @@ func (oClient *OctarineClient) getOctarineDataplaneYAML(namespace string) (strin
 }
 
 const (
-	bookInfoInstallFile        = "/bookinfo.yaml"
+	bookInfoInstallFile = "/bookinfo.yaml"
 )
 
-func (oClient *OctarineClient) getOctarineYAMLs(namespace string) (string, error) {
+func (oClient *Client) getOctarineYAMLs(namespace string) (string, error) {
 	dp, err := oClient.getOctarineDataplaneYAML(namespace)
 	if err != nil {
 		err = errors.Wrap(err, "unable to create dataplane yaml")
@@ -139,13 +139,13 @@ func (oClient *OctarineClient) getOctarineYAMLs(namespace string) (string, error
 	return dp, nil
 }
 
-func (oClient *OctarineClient) getBookInfoAppYAML() (string, error) {
+func (oClient *Client) getBookInfoAppYAML() (string, error) {
 	b, err := ioutil.ReadFile(bookInfoInstallFile)
-    if err != nil {
+	if err != nil {
 		err = errors.Wrap(err, "Failed to read bookinfo.yaml")
 		logrus.Error(err)
 		return "", err
-    }
+	}
 	str := string(b)
 	return str, nil
 }

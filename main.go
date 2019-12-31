@@ -57,7 +57,7 @@ func main() {
 	s := grpc.NewServer(
 	// grpc.Creds(credentials.NewServerTLSFromCert(&insecure.Cert)),
 	)
-	mesh.RegisterMeshServiceServer(s, &octarine.OctarineClient{})
+	mesh.RegisterMeshServiceServer(s, &octarine.Client{})
 	rand.Seed(time.Now().UnixNano())
 	// Serve gRPC Server
 	logrus.Infof("Serving gRPC on %s", addr)
