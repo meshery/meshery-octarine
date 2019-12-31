@@ -24,22 +24,22 @@ import (
 	"k8s.io/client-go/tools/clientcmd"
 )
 
-// OctarineClient represents an Octarine client in Meshery
-type OctarineClient struct {
+// Client represents an Octarine client in Meshery
+type Client struct {
 	config           *rest.Config
 	k8sClientset     *kubernetes.Clientset
 	k8sDynamicClient dynamic.Interface
 	eventChan        chan *meshes.EventsResponse
 
-	octarineAccount            string
-	octarineControlPlane       string
-	octarineAccMgrPword        string
-	octarineDomain             string
-	octarineCreatorPword       string
-	octarineDeleterPword       string
-	octarineReleaseVersion     string
-	octarineDataplaneNs        string
-	octarineReleaseUpdatedAt   time.Time
+	octarineAccount          string
+	octarineControlPlane     string
+	octarineAccMgrPword      string
+	octarineDomain           string
+	octarineCreatorPword     string
+	octarineDeleterPword     string
+	octarineReleaseVersion   string
+	octarineDataplaneNs      string
+	octarineReleaseUpdatedAt time.Time
 }
 
 func configClient(kubeconfig []byte, contextName string) (*rest.Config, error) {
@@ -57,8 +57,8 @@ func configClient(kubeconfig []byte, contextName string) (*rest.Config, error) {
 	return rest.InClusterConfig()
 }
 
-func newClient(kubeconfig []byte, contextName string) (*OctarineClient, error) {
-	client := OctarineClient{}
+func newClient(kubeconfig []byte, contextName string) (*Client, error) {
+	client := Client{}
 	config, err := configClient(kubeconfig, contextName)
 	if err != nil {
 		return nil, err
