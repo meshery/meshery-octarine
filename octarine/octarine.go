@@ -33,6 +33,7 @@ import (
 	"k8s.io/apimachinery/pkg/runtime/schema"
 )
 
+// Instantiate a client instance to interface with the Octarine Service Mesh
 func (oClient *Client) CreateMeshInstance(_ context.Context, k8sReq *meshes.CreateMeshInstanceRequest) (*meshes.CreateMeshInstanceResponse, error) {
 	var k8sConfig []byte
 	contextName := ""
