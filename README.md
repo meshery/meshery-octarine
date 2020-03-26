@@ -1,4 +1,4 @@
-<img align="right" src="https://layer5.io/assets/images/cube-sh-small.png" />
+<p style="text-align:center;" align="center"><a href="https://layer5.io/meshery"><img align="center" style="margin-bottom:20px;" src="https://raw.githubusercontent.com/layer5io/layer5/master/assets/images/meshery/meshery-logo-tag-light-text-side.png"  width="70%" /></a><br /><br /></p>
 
 [![Docker Pulls](https://img.shields.io/docker/pulls/layer5/meshery-octarine.svg)](https://hub.docker.com/r/layer5/meshery-octarine)
 [![Go Report Card](https://goreportcard.com/badge/github.com/layer5io/meshery-octarine)](https://goreportcard.com/report/github.com/layer5io/meshery-octarine)
@@ -7,7 +7,9 @@
 [![GitHub issues by-label](https://img.shields.io/github/issues/layer5io/meshery-octarine/help%20wanted.svg)](https://github.com/layer5io/meshery-octarine/issues?q=is%3Aopen+is%3Aissue+label%3A"help+wanted")
 [![Website](https://img.shields.io/website/https/layer5.io/meshery.svg)](https://layer5.io/meshery/)
 [![Twitter Follow](https://img.shields.io/twitter/follow/layer5.svg?label=Follow&style=social)](https://twitter.com/intent/follow?screen_name=mesheryio)
-[![Slack](https://img.shields.io/badge/slack-380-lightgrey)](http://slack.layer5.io)
+[![Slack](http://slack.layer5.io/badge.svg)](http://slack.layer5.io)
+[![CII Best Practices](https://bestpractices.coreinfrastructure.org/projects/3564/badge)](https://bestpractices.coreinfrastructure.org/projects/3564)
+
 
 # meshery-octarine
 Meshery adapter for Octarine

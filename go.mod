@@ -71,3 +71,5 @@ replace github.com/golang/lint v0.0.0-20190409202823-959b441ac422 => golang.org/
 replace sourcegraph.com/sourcegraph/go-diff v0.5.1 => github.com/sourcegraph/go-diff v0.5.1
 
 replace k8s.io/apimachinery => k8s.io/apimachinery v0.0.0-20190404173353-6a84e37a896d
+
+go 1.13
