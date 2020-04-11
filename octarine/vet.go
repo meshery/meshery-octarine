@@ -29,11 +29,11 @@ func (m *metaInformerFactory) K8s() informers.SharedInformerFactory {
 	return m.k8s
 }
 
-func (oClient *OctarineClient) runVet() error {
+func (oClient *Client) runVet() error {
 	kubeInformerFactory := informers.NewSharedInformerFactory(oClient.k8sClientset, 0)
-//	informerFactory := &metaInformerFactory{
-//		k8s: kubeInformerFactory,
-//	}
+	//	informerFactory := &metaInformerFactory{
+	//		k8s: kubeInformerFactory,
+	//	}
 
 	stopCh := make(chan struct{})
 
