@@ -12,7 +12,7 @@ require (
 	github.com/gogo/googleapis v1.2.0 // indirect
 	github.com/golang/groupcache v0.0.0-20190129154638-5b532d6fd5ef // indirect
 	github.com/golang/mock v1.3.1 // indirect
-	github.com/golang/protobuf v1.3.1
+	github.com/golang/protobuf v1.3.5
 	github.com/google/btree v1.0.0 // indirect
 	github.com/google/gofuzz v1.0.0 // indirect
 	github.com/google/pprof v0.0.0-20190515194954-54271f7e092f // indirect
