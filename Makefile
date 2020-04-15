@@ -16,4 +16,4 @@ docker-run:
 	layer5/meshery-octarine
 
 run:
-	DEBUG=true go run main.go
+	go clean; go mod tidy; DEBUG=true go run main.go
