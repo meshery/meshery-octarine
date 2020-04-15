@@ -52,22 +52,22 @@ func main() {
 	defer cancel()
 	if os.Args[1] == "init" {
 		config, err := ioutil.ReadFile(os.Args[2])
-		contextName := os.Args[3]			
+		contextName := os.Args[3]
 		_, err = c.CreateMeshInstance(ctx, &pb.CreateMeshInstanceRequest{K8SConfig: config, ContextName: contextName})
 		if err != nil {
 			log.Fatalf("could not initialize client: %v", err)
 		}
 	} else if os.Args[1] == "install" || os.Args[1] == "delete" {
 		_, err = c.ApplyOperation(ctx, &pb.ApplyRuleRequest{OpName: "octarine_install",
-															DeleteOp: os.Args[1] == "delete",
-															Namespace: "octarine-dataplane"})
+			DeleteOp:  os.Args[1] == "delete",
+			Namespace: "octarine-dataplane"})
 		if err != nil {
 			log.Fatalf("could not install octarine: %v", err)
 		}
 	} else if os.Args[1] == "install-bookinfo" || os.Args[1] == "delete-bookinfo" {
 		_, err = c.ApplyOperation(ctx, &pb.ApplyRuleRequest{OpName: "install_book_info",
-															DeleteOp: os.Args[1] == "delete-bookinfo",
-															Namespace: os.Args[2]})
+			DeleteOp:  os.Args[1] == "delete-bookinfo",
+			Namespace: os.Args[2]})
 		if err != nil {
 			log.Fatalf("could not install octarine: %v", err)
 		}
