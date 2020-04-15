@@ -24,7 +24,7 @@ Once the Octarine's data plane services are deployed, the adapter can be used to
 * Enable the target namespace for automatic sidecar injection.
 * Deploy Bookinfo to the target namespace.
 
-## Environement Variables
+## Environment Variables
 In order to connect to the Octarine Control Plane the adapter requires the follwing environment variables to be set:
 * OCTARINE_DOCKER_USERNAME: The docker username needed to pull Octarine's images to the target cluster. Do not use your own docker credentials. Use the ones supplies by Octarine.
 * OCTARINE_DOCKER_EMAIL: The docker username needed to pull Octarine's images to the target cluster.
