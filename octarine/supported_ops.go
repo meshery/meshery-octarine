@@ -21,7 +21,7 @@ type supportedOperation struct {
 	name string
 	// the template file name
 	templateName string
-	opType meshes.OpCategory
+	opType       meshes.OpCategory
 }
 
 const (
@@ -48,7 +48,7 @@ var supportedOps = map[string]supportedOperation{
 		opType: meshes.OpCategory_VALIDATE,
 	},
 	customOpCommand: {
-		name: "Apply custom configuration (YAML)",
+		name:   "Apply custom configuration (YAML)",
 		opType: meshes.OpCategory_CUSTOM,
 	},
 }
