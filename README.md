@@ -1,6 +1,5 @@
-> [!WARNING]
-> Octarine was acquired by VMware
-> Adapter archived
+> [!IMPORTANT]
+> Octarine was acquired by VMware. Meshery Adapter archived.
 
 <p style="text-align:center;" align="center"><a href="https://layer5.io/meshery"><picture align="center">
   <source media="(prefers-color-scheme: dark)" srcset="img\readme\meshery-logo-dark-text-side.svg"  width="70%" align="center" style="margin-bottom:20px;">
